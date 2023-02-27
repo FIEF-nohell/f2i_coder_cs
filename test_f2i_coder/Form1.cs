@@ -19,7 +19,8 @@ namespace test_f2i_coder
 
         public void createFile()
         {
-
+            Stopwatch stopwatch2 = new Stopwatch();
+            stopwatch2.Start();
             // Convert the BitArray to a byte array
             List<byte> byteList = new List<byte>();
             byte currentByte = 0;
@@ -50,11 +51,15 @@ namespace test_f2i_coder
             byte[] data = byteList.ToArray();
 
             // Write the binary data to a file
-            using (FileStream fs = new FileStream(textBox1.Text + ".zip", FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(textBox1.Text + ".mp4", FileMode.Create, FileAccess.Write))
             {
                 fs.Write(data, 0, data.Length);
             }
 
+            stopwatch2.Stop();
+            TimeSpan elapsed = stopwatch2.Elapsed;
+
+            button1.Text = "Done in " + Math.Round(elapsed.TotalSeconds, 3, MidpointRounding.ToEven).ToString() + " seconds!";
         }
 
         public void scanImage()
@@ -129,6 +134,7 @@ namespace test_f2i_coder
         {
             try
             {
+                button1.Text = "Create file";
                 LoadBitmap();
             }
             catch
