@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
+using System.Text;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -51,7 +52,7 @@ namespace test_f2i_coder
             byte[] data = byteList.ToArray();
 
             // Write the binary data to a file
-            using (FileStream fs = new FileStream(textBox1.Text + ".mp4", FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(textBox1.Text, FileMode.Create, FileAccess.Write))
             {
                 fs.Write(data, 0, data.Length);
             }
@@ -60,6 +61,8 @@ namespace test_f2i_coder
             TimeSpan elapsed = stopwatch2.Elapsed;
 
             button1.Text = "Done in " + Math.Round(elapsed.TotalSeconds, 3, MidpointRounding.ToEven).ToString() + " seconds!";
+            decode_btn.Enabled = false;
+            button1.Enabled = false;
         }
 
         public void scanImage()
@@ -71,7 +74,7 @@ namespace test_f2i_coder
             int red_bytes_read = 0;
             int separator_counter = 0;
             BitArray file_data = new BitArray(pixels);
-            BitArray ext_data = new BitArray(400);
+            BitArray ext_data = new BitArray(100);
 
             for (int y = 0; y < bmp.Height; y++)
             {
@@ -107,6 +110,7 @@ namespace test_f2i_coder
 
             file_data_global = file_data;
             ext_data_global = ext_data;
+            button1.Enabled = true;
         }
 
         public void LoadBitmap()
@@ -126,8 +130,8 @@ namespace test_f2i_coder
                 TimeSpan elapsed1 = stopwatch1.Elapsed;
                 file_time.Text = Math.Round(elapsed1.TotalSeconds, 3,MidpointRounding.ToEven).ToString() + " Seconds";
                 img_dim.Text = bmp.Width.ToString() + " x " + bmp.Height.ToString() + " pixels";
+                decode_btn.Enabled = true;
             }
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -145,7 +149,8 @@ namespace test_f2i_coder
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            decode_btn.Enabled = false;
+            button1.Enabled = false;
         }
 
         private void decode_btn_Click(object sender, EventArgs e)
