@@ -3,15 +3,58 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.IO;
 
 namespace test_f2i_coder
 {
     public partial class Form1 : Form
     {
         Bitmap bmp = null;
+        BitArray file_data_global = new BitArray(0);
+        BitArray ext_data_global = new BitArray(0);
         public Form1()
         {
             InitializeComponent();
+        }
+
+        public void createFile()
+        {
+
+            // Convert the BitArray to a byte array
+            List<byte> byteList = new List<byte>();
+            byte currentByte = 0;
+            int bitCount = 0;
+
+            foreach (bool bit in file_data_global)
+            {
+                currentByte <<= 1;
+                if (bit)
+                {
+                    currentByte |= 1;
+                }
+                bitCount++;
+                if (bitCount == 8)
+                {
+                    byteList.Add(currentByte);
+                    currentByte = 0;
+                    bitCount = 0;
+                }
+            }
+
+            if (bitCount > 0)
+            {
+                currentByte <<= (8 - bitCount);
+                byteList.Add(currentByte);
+            }
+
+            byte[] data = byteList.ToArray();
+
+            // Write the binary data to a file
+            using (FileStream fs = new FileStream(textBox1.Text + ".zip", FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(data, 0, data.Length);
+            }
+
         }
 
         public void scanImage()
@@ -48,8 +91,6 @@ namespace test_f2i_coder
                     }
                     bytes_read++;
                     if(separator_counter >= 1) red_bytes_read++;
-                    float perc = ((bytes_read / (pixels)) * 100);
-                   Console.Write( perc.ToString());
                 }
                 if (separator_counter == 2) break;
             }
@@ -59,6 +100,8 @@ namespace test_f2i_coder
             pixel_text.Text = "Data read in:";
             pixel_time.Text = Math.Round(elapsed.TotalSeconds, 3, MidpointRounding.ToEven).ToString() + " Seconds";
 
+            file_data_global = file_data;
+            ext_data_global = ext_data;
         }
 
         public void LoadBitmap()
@@ -103,6 +146,23 @@ namespace test_f2i_coder
         {
             if(bmp != null) scanImage();
             else MessageBox.Show("No image to decompile.");
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (bmp != null)
+            {
+                try
+                {
+                    createFile();
+                }
+                catch
+                {
+                    MessageBox.Show("Error creating file: " + textBox1.Text);
+                }
+                createFile();
+            }
+            else MessageBox.Show("No image to decompile."); 
         }
     }
 }
