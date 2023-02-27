@@ -46,10 +46,9 @@
             // 
             // load_image_button
             // 
-            this.load_image_button.Location = new System.Drawing.Point(256, 165);
-            this.load_image_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.load_image_button.Location = new System.Drawing.Point(293, 220);
             this.load_image_button.Name = "load_image_button";
-            this.load_image_button.Size = new System.Drawing.Size(145, 22);
+            this.load_image_button.Size = new System.Drawing.Size(166, 29);
             this.load_image_button.TabIndex = 0;
             this.load_image_button.Text = "Load image";
             this.load_image_button.UseVisualStyleBackColor = true;
@@ -57,10 +56,9 @@
             // 
             // image_container
             // 
-            this.image_container.Location = new System.Drawing.Point(3, 3);
-            this.image_container.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.image_container.Location = new System.Drawing.Point(3, 4);
             this.image_container.Name = "image_container";
-            this.image_container.Size = new System.Drawing.Size(240, 240);
+            this.image_container.Size = new System.Drawing.Size(274, 320);
             this.image_container.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.image_container.TabIndex = 1;
             this.image_container.TabStop = false;
@@ -68,60 +66,59 @@
             // file_text
             // 
             this.file_text.AutoSize = true;
-            this.file_text.Location = new System.Drawing.Point(256, 9);
+            this.file_text.Location = new System.Drawing.Point(293, 12);
             this.file_text.Name = "file_text";
-            this.file_text.Size = new System.Drawing.Size(81, 15);
+            this.file_text.Size = new System.Drawing.Size(103, 20);
             this.file_text.TabIndex = 2;
             this.file_text.Text = "File load took:";
             // 
             // pixel_text
             // 
             this.pixel_text.AutoSize = true;
-            this.pixel_text.Location = new System.Drawing.Point(256, 50);
+            this.pixel_text.Location = new System.Drawing.Point(293, 67);
             this.pixel_text.Name = "pixel_text";
-            this.pixel_text.Size = new System.Drawing.Size(73, 15);
+            this.pixel_text.Size = new System.Drawing.Size(94, 20);
             this.pixel_text.TabIndex = 3;
             this.pixel_text.Text = "Data read in:";
             // 
             // file_time
             // 
             this.file_time.AutoSize = true;
-            this.file_time.Location = new System.Drawing.Point(402, 9);
+            this.file_time.Location = new System.Drawing.Point(459, 12);
             this.file_time.Name = "file_time";
-            this.file_time.Size = new System.Drawing.Size(0, 15);
+            this.file_time.Size = new System.Drawing.Size(0, 20);
             this.file_time.TabIndex = 4;
             // 
             // pixel_time
             // 
             this.pixel_time.AutoSize = true;
-            this.pixel_time.Location = new System.Drawing.Point(402, 50);
+            this.pixel_time.Location = new System.Drawing.Point(459, 67);
             this.pixel_time.Name = "pixel_time";
-            this.pixel_time.Size = new System.Drawing.Size(0, 15);
+            this.pixel_time.Size = new System.Drawing.Size(0, 20);
             this.pixel_time.TabIndex = 5;
             // 
             // dim
             // 
             this.dim.AutoSize = true;
-            this.dim.Location = new System.Drawing.Point(256, 93);
+            this.dim.Location = new System.Drawing.Point(293, 124);
             this.dim.Name = "dim";
-            this.dim.Size = new System.Drawing.Size(110, 15);
+            this.dim.Size = new System.Drawing.Size(137, 20);
             this.dim.TabIndex = 9;
             this.dim.Text = "Image dimensions: ";
             // 
             // img_dim
             // 
             this.img_dim.AutoSize = true;
-            this.img_dim.Location = new System.Drawing.Point(402, 93);
+            this.img_dim.Location = new System.Drawing.Point(459, 124);
             this.img_dim.Name = "img_dim";
-            this.img_dim.Size = new System.Drawing.Size(0, 15);
+            this.img_dim.Size = new System.Drawing.Size(0, 20);
             this.img_dim.TabIndex = 10;
             // 
             // decode_btn
             // 
-            this.decode_btn.Location = new System.Drawing.Point(407, 165);
-            this.decode_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.decode_btn.Location = new System.Drawing.Point(465, 220);
             this.decode_btn.Name = "decode_btn";
-            this.decode_btn.Size = new System.Drawing.Size(145, 22);
+            this.decode_btn.Size = new System.Drawing.Size(166, 29);
             this.decode_btn.TabIndex = 11;
             this.decode_btn.Text = "Decode image";
             this.decode_btn.UseVisualStyleBackColor = true;
@@ -130,17 +127,20 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.image_container);
-            this.groupBox1.Location = new System.Drawing.Point(7, 1);
+            this.groupBox1.Location = new System.Drawing.Point(8, 1);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(246, 251);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Size = new System.Drawing.Size(281, 335);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(256, 221);
+            this.button1.Location = new System.Drawing.Point(293, 295);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(296, 23);
+            this.button1.Size = new System.Drawing.Size(338, 31);
             this.button1.TabIndex = 13;
             this.button1.Text = "Create file";
             this.button1.UseVisualStyleBackColor = true;
@@ -148,17 +148,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(256, 192);
+            this.textBox1.Location = new System.Drawing.Point(293, 256);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(296, 23);
+            this.textBox1.Size = new System.Drawing.Size(338, 27);
             this.textBox1.TabIndex = 14;
             this.textBox1.Text = "output";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 260);
+            this.ClientSize = new System.Drawing.Size(645, 347);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
@@ -170,7 +171,8 @@
             this.Controls.Add(this.pixel_text);
             this.Controls.Add(this.file_text);
             this.Controls.Add(this.load_image_button);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(663, 394);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
