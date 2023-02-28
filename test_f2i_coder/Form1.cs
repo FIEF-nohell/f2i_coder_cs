@@ -60,7 +60,7 @@ namespace test_f2i_coder
             stopwatch2.Stop();
             TimeSpan elapsed = stopwatch2.Elapsed;
 
-            info_lbl.Text = "Decompiled " + Math.Round(elapsed.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds!";
+            info_lbl.Text = "Decompiled in " + Math.Round(elapsed.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds!";
             decode_btn.Enabled = false;
             button1.Enabled = false;
         }
