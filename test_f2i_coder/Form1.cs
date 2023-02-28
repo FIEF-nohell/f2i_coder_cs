@@ -60,7 +60,7 @@ namespace test_f2i_coder
             stopwatch2.Stop();
             TimeSpan elapsed = stopwatch2.Elapsed;
 
-            button1.Text = "Done in " + Math.Round(elapsed.TotalSeconds, 3, MidpointRounding.ToEven).ToString() + " seconds!";
+            info_lbl.Text = "Decompiled " + Math.Round(elapsed.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds!";
             decode_btn.Enabled = false;
             button1.Enabled = false;
         }
@@ -105,8 +105,7 @@ namespace test_f2i_coder
 
             stopwatch.Stop();
             TimeSpan elapsed = stopwatch.Elapsed;
-            pixel_text.Text = "Data read in:";
-            pixel_time.Text = Math.Round(elapsed.TotalSeconds, 3, MidpointRounding.ToEven).ToString() + " Seconds";
+            info_lbl.Text = "Reading data took " + Math.Round(elapsed.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " Seconds";
 
             file_data_global = file_data;
             ext_data_global = ext_data;
@@ -125,11 +124,10 @@ namespace test_f2i_coder
                 stopwatch1.Start();
                 // display image in picture box  
                 bmp = new Bitmap(open.FileName);
-                image_container.Image = bmp;
+                pictureBox1.Image = bmp;
                 stopwatch1.Stop();
                 TimeSpan elapsed1 = stopwatch1.Elapsed;
-                file_time.Text = Math.Round(elapsed1.TotalSeconds, 3,MidpointRounding.ToEven).ToString() + " Seconds";
-                img_dim.Text = bmp.Width.ToString() + " x " + bmp.Height.ToString() + " pixels";
+                info_lbl.Text = bmp.Width.ToString() + " x " + bmp.Height.ToString() + " px loaded in " + Math.Round(elapsed1.TotalSeconds, 2,MidpointRounding.ToEven).ToString() + " Seconds";
                 decode_btn.Enabled = true;
             }
         }
@@ -155,7 +153,17 @@ namespace test_f2i_coder
 
         private void decode_btn_Click(object sender, EventArgs e)
         {
-            if(bmp != null) scanImage();
+            if (bmp != null)
+            {
+                try
+                {
+                    scanImage();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
             else MessageBox.Show("No image to decompile.");
         }
 
@@ -174,6 +182,11 @@ namespace test_f2i_coder
                 createFile();
             }
             else MessageBox.Show("No image to decompile."); 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

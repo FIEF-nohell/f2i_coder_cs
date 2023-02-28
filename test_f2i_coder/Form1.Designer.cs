@@ -29,24 +29,17 @@
         private void InitializeComponent()
         {
             this.load_image_button = new System.Windows.Forms.Button();
-            this.image_container = new System.Windows.Forms.PictureBox();
-            this.file_text = new System.Windows.Forms.Label();
-            this.pixel_text = new System.Windows.Forms.Label();
-            this.file_time = new System.Windows.Forms.Label();
-            this.pixel_time = new System.Windows.Forms.Label();
-            this.dim = new System.Windows.Forms.Label();
-            this.img_dim = new System.Windows.Forms.Label();
             this.decode_btn = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.image_container)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.info_lbl = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // load_image_button
             // 
-            this.load_image_button.Location = new System.Drawing.Point(293, 220);
+            this.load_image_button.Location = new System.Drawing.Point(12, 12);
             this.load_image_button.Name = "load_image_button";
             this.load_image_button.Size = new System.Drawing.Size(166, 29);
             this.load_image_button.TabIndex = 0;
@@ -54,69 +47,9 @@
             this.load_image_button.UseVisualStyleBackColor = true;
             this.load_image_button.Click += new System.EventHandler(this.button1_Click);
             // 
-            // image_container
-            // 
-            this.image_container.Location = new System.Drawing.Point(3, 4);
-            this.image_container.Name = "image_container";
-            this.image_container.Size = new System.Drawing.Size(274, 320);
-            this.image_container.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.image_container.TabIndex = 1;
-            this.image_container.TabStop = false;
-            // 
-            // file_text
-            // 
-            this.file_text.AutoSize = true;
-            this.file_text.Location = new System.Drawing.Point(293, 12);
-            this.file_text.Name = "file_text";
-            this.file_text.Size = new System.Drawing.Size(103, 20);
-            this.file_text.TabIndex = 2;
-            this.file_text.Text = "File load took:";
-            // 
-            // pixel_text
-            // 
-            this.pixel_text.AutoSize = true;
-            this.pixel_text.Location = new System.Drawing.Point(293, 67);
-            this.pixel_text.Name = "pixel_text";
-            this.pixel_text.Size = new System.Drawing.Size(94, 20);
-            this.pixel_text.TabIndex = 3;
-            this.pixel_text.Text = "Data read in:";
-            // 
-            // file_time
-            // 
-            this.file_time.AutoSize = true;
-            this.file_time.Location = new System.Drawing.Point(459, 12);
-            this.file_time.Name = "file_time";
-            this.file_time.Size = new System.Drawing.Size(0, 20);
-            this.file_time.TabIndex = 4;
-            // 
-            // pixel_time
-            // 
-            this.pixel_time.AutoSize = true;
-            this.pixel_time.Location = new System.Drawing.Point(459, 67);
-            this.pixel_time.Name = "pixel_time";
-            this.pixel_time.Size = new System.Drawing.Size(0, 20);
-            this.pixel_time.TabIndex = 5;
-            // 
-            // dim
-            // 
-            this.dim.AutoSize = true;
-            this.dim.Location = new System.Drawing.Point(293, 124);
-            this.dim.Name = "dim";
-            this.dim.Size = new System.Drawing.Size(137, 20);
-            this.dim.TabIndex = 9;
-            this.dim.Text = "Image dimensions: ";
-            // 
-            // img_dim
-            // 
-            this.img_dim.AutoSize = true;
-            this.img_dim.Location = new System.Drawing.Point(459, 124);
-            this.img_dim.Name = "img_dim";
-            this.img_dim.Size = new System.Drawing.Size(0, 20);
-            this.img_dim.TabIndex = 10;
-            // 
             // decode_btn
             // 
-            this.decode_btn.Location = new System.Drawing.Point(465, 220);
+            this.decode_btn.Location = new System.Drawing.Point(184, 12);
             this.decode_btn.Name = "decode_btn";
             this.decode_btn.Size = new System.Drawing.Size(166, 29);
             this.decode_btn.TabIndex = 11;
@@ -124,20 +57,9 @@
             this.decode_btn.UseVisualStyleBackColor = true;
             this.decode_btn.Click += new System.EventHandler(this.decode_btn_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.image_container);
-            this.groupBox1.Location = new System.Drawing.Point(8, 1);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Size = new System.Drawing.Size(281, 335);
-            this.groupBox1.TabIndex = 12;
-            this.groupBox1.TabStop = false;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(293, 295);
+            this.button1.Location = new System.Drawing.Point(12, 87);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(338, 31);
@@ -148,38 +70,49 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(293, 256);
+            this.textBox1.Location = new System.Drawing.Point(12, 50);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(338, 27);
             this.textBox1.TabIndex = 14;
             this.textBox1.Text = "output";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(12, 136);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(338, 338);
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            // 
+            // info_lbl
+            // 
+            this.info_lbl.AutoSize = true;
+            this.info_lbl.Location = new System.Drawing.Point(12, 482);
+            this.info_lbl.Name = "info_lbl";
+            this.info_lbl.Size = new System.Drawing.Size(38, 20);
+            this.info_lbl.TabIndex = 16;
+            this.info_lbl.Text = "Info:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 347);
+            this.ClientSize = new System.Drawing.Size(362, 511);
+            this.Controls.Add(this.info_lbl);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.decode_btn);
-            this.Controls.Add(this.img_dim);
-            this.Controls.Add(this.dim);
-            this.Controls.Add(this.pixel_time);
-            this.Controls.Add(this.file_time);
-            this.Controls.Add(this.pixel_text);
-            this.Controls.Add(this.file_text);
             this.Controls.Add(this.load_image_button);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(663, 394);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "f2i - decompiler";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.image_container)).EndInit();
-            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,16 +121,10 @@
         #endregion
 
         private Button load_image_button;
-        private PictureBox image_container;
-        private Label file_text;
-        private Label pixel_text;
-        private Label file_time;
-        private Label pixel_time;
-        private Label dim;
-        private Label img_dim;
         private Button decode_btn;
-        private GroupBox groupBox1;
         private Button button1;
         private TextBox textBox1;
+        private PictureBox pictureBox1;
+        private Label info_lbl;
     }
 }
