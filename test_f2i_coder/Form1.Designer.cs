@@ -94,9 +94,8 @@
             this.info_lbl.AutoSize = true;
             this.info_lbl.Location = new System.Drawing.Point(12, 482);
             this.info_lbl.Name = "info_lbl";
-            this.info_lbl.Size = new System.Drawing.Size(38, 20);
+            this.info_lbl.Size = new System.Drawing.Size(0, 20);
             this.info_lbl.TabIndex = 16;
-            this.info_lbl.Text = "Info:";
             // 
             // Form1
             // 
