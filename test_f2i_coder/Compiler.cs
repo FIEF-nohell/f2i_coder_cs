@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -61,13 +62,20 @@ namespace f2i_coder
         {
             try
             {
-                foreach (byte b in binaryData)
+                int numPixels = binaryData.Length * 8; // each byte has 8 bits
+                int imageSize = (int)Math.Ceiling(Math.Sqrt(numPixels)); // calculate image size
+                Bitmap bitmap = new Bitmap(imageSize, imageSize);
+
+                for (int i = 0; i < numPixels; i++)
                 {
-                    for (int i = 7; i >= 0; i--)
-                    {
-                        Boolean bit = (b & (1 << i)) == 0 ? false : true;
-                    }
+                    int x = i % imageSize;
+                    int y = i / imageSize;
+                    bool bitValue = (binaryData[i / 8] & (1 << (7 - (i % 8)))) != 0; // get bit value
+                    Color pixelColor = bitValue ? Color.White : Color.Black; // set pixel color
+                    bitmap.SetPixel(x, y, pixelColor);
                 }
+
+                bitmap.Save("output.png", ImageFormat.Png);
             }
             catch(Exception ex)
             {
