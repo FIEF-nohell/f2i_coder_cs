@@ -30,13 +30,14 @@ namespace f2i_coder
         private void button1_Click(object sender, EventArgs e)
         {
 
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
+            
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                Stopwatch stopwatch1 = new Stopwatch();
+                stopwatch1.Start();
                 string filePath = openFileDialog.FileName;
                 try
                 {
@@ -52,14 +53,18 @@ namespace f2i_coder
                 {
                     Console.WriteLine("Error: " + ex.Message);
                 }
+                stopwatch1.Stop();
+                TimeSpan elapsed1 = stopwatch1.Elapsed;
+                info_lbl.Text = "Reading data took " + Math.Round(elapsed1.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds";
+
             }
 
-            stopwatch1.Stop();
-            TimeSpan elapsed1 = stopwatch1.Elapsed;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            Stopwatch stopwatch1 = new Stopwatch();
+            stopwatch1.Start();
             try
             {
                 int numPixels = binaryData.Length * 8; // each byte has 8 bits
@@ -75,12 +80,17 @@ namespace f2i_coder
                     bitmap.SetPixel(x, y, pixelColor);
                 }
 
-                bitmap.Save("output.png", ImageFormat.Png);
+                bitmap.Save("_encoded.png", ImageFormat.Png);
+                pictureBox1.Image = bitmap;
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+            stopwatch1.Stop();
+            TimeSpan elapsed1 = stopwatch1.Elapsed;
+            info_lbl.Text = "Compiling took " + Math.Round(elapsed1.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds";
+
         }
     }
 }
