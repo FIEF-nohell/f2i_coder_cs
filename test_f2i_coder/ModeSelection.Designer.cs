@@ -38,7 +38,7 @@
             this.compile_btn.Name = "compile_btn";
             this.compile_btn.Size = new System.Drawing.Size(164, 29);
             this.compile_btn.TabIndex = 0;
-            this.compile_btn.Text = "compile file";
+            this.compile_btn.Text = "File to image";
             this.compile_btn.UseVisualStyleBackColor = true;
             this.compile_btn.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -48,7 +48,7 @@
             this.decompile_btn.Name = "decompile_btn";
             this.decompile_btn.Size = new System.Drawing.Size(164, 29);
             this.decompile_btn.TabIndex = 1;
-            this.decompile_btn.Text = "decompile file";
+            this.decompile_btn.Text = "Image to file";
             this.decompile_btn.UseVisualStyleBackColor = true;
             this.decompile_btn.Click += new System.EventHandler(this.button2_Click);
             // 

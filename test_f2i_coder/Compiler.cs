@@ -14,6 +14,8 @@ namespace f2i_coder
 {
     public partial class Compiler : Form
     {
+
+        byte[] binaryData = null;
         public Compiler()
         {
             InitializeComponent();
@@ -41,8 +43,7 @@ namespace f2i_coder
                     {
                         using (BinaryReader binaryReader = new BinaryReader(fileStream))
                         {
-                            byte[] binaryData = binaryReader.ReadBytes((int)fileStream.Length);
-                            Console.WriteLine(BitConverter.ToString(binaryData));
+                            binaryData = binaryReader.ReadBytes((int)fileStream.Length);
                         }
                     }
                 }
@@ -54,6 +55,24 @@ namespace f2i_coder
 
             stopwatch1.Stop();
             TimeSpan elapsed1 = stopwatch1.Elapsed;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (byte b in binaryData)
+                {
+                    for (int i = 7; i >= 0; i--)
+                    {
+                        Boolean bit = (b & (1 << i)) == 0 ? false : true;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
     }
 }
