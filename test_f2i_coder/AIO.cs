@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,12 +39,14 @@ namespace f2i_coder
         }
 
         // ----- Variables -----
-        bool currentlyUsing = false;
         byte[] c_binaryData = null;
         byte[] c_binaryData_ext = null;
         string c_fileExtension = "";
         Bitmap c_bitmap;
 
+        Bitmap d_bmp = null;
+        BitArray d_file_data_global = new BitArray(0);
+        BitArray d_ext_data_global = new BitArray(0);
 
         // ----- COMPILER SECTION -----
 
@@ -186,12 +189,34 @@ namespace f2i_coder
 
         // ----- DECOMPILER SECTION -----
 
+        private void decompiler_select_file()
+        {
+            // open file dialog   
+            OpenFileDialog open = new OpenFileDialog();
+            // image filters  
+            open.Filter = "Allowed types: (*.png)|*.png";
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                // display image in picture box  
+                d_bmp = new Bitmap(open.FileName);
+                pictureBox2.Image = d_bmp;
+            }
+        }
+
         private void d_select_file_Click(object sender, EventArgs e)
         {
             //decompiler select file
             try
             {
-
+                pictureBox2.Image = null;
+                d_decompile_info.Visible = false;
+                d_save_info.Visible = false;
+                d_select_info.Visible = false;
+                d_decompile_data.Enabled = false;
+                d_save_file.Enabled = false;
+                decompiler_select_file();
+                d_decompile_data.Enabled = true;
+                d_select_info.Visible = true;
             }
             catch(Exception ex)
             {
