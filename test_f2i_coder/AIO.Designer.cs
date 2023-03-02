@@ -37,6 +37,14 @@
             this.d_save_file = new System.Windows.Forms.Button();
             this.d_decompile_data = new System.Windows.Forms.Button();
             this.d_select_file = new System.Windows.Forms.Button();
+            this.c_select_info = new System.Windows.Forms.Label();
+            this.c_compile_info = new System.Windows.Forms.Label();
+            this.c_save_info = new System.Windows.Forms.Label();
+            this.d_select_info = new System.Windows.Forms.Label();
+            this.d_decompile_info = new System.Windows.Forms.Label();
+            this.d_save_info = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // compiler_title
@@ -127,6 +135,75 @@
             this.d_select_file.UseVisualStyleBackColor = true;
             this.d_select_file.Click += new System.EventHandler(this.d_select_file_Click);
             // 
+            // c_select_info
+            // 
+            this.c_select_info.AutoSize = true;
+            this.c_select_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.c_select_info.Location = new System.Drawing.Point(64, 98);
+            this.c_select_info.Name = "c_select_info";
+            this.c_select_info.Size = new System.Drawing.Size(49, 20);
+            this.c_select_info.TabIndex = 8;
+            this.c_select_info.Text = "Done!";
+            // 
+            // c_compile_info
+            // 
+            this.c_compile_info.AutoSize = true;
+            this.c_compile_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.c_compile_info.Location = new System.Drawing.Point(221, 98);
+            this.c_compile_info.Name = "c_compile_info";
+            this.c_compile_info.Size = new System.Drawing.Size(49, 20);
+            this.c_compile_info.TabIndex = 9;
+            this.c_compile_info.Text = "Done!";
+            // 
+            // c_save_info
+            // 
+            this.c_save_info.AutoSize = true;
+            this.c_save_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.c_save_info.Location = new System.Drawing.Point(380, 98);
+            this.c_save_info.Name = "c_save_info";
+            this.c_save_info.Size = new System.Drawing.Size(49, 20);
+            this.c_save_info.TabIndex = 10;
+            this.c_save_info.Text = "Done!";
+            // 
+            // d_select_info
+            // 
+            this.d_select_info.AutoSize = true;
+            this.d_select_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.d_select_info.Location = new System.Drawing.Point(573, 98);
+            this.d_select_info.Name = "d_select_info";
+            this.d_select_info.Size = new System.Drawing.Size(49, 20);
+            this.d_select_info.TabIndex = 11;
+            this.d_select_info.Text = "Done!";
+            // 
+            // d_decompile_info
+            // 
+            this.d_decompile_info.AutoSize = true;
+            this.d_decompile_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.d_decompile_info.Location = new System.Drawing.Point(727, 98);
+            this.d_decompile_info.Name = "d_decompile_info";
+            this.d_decompile_info.Size = new System.Drawing.Size(49, 20);
+            this.d_decompile_info.TabIndex = 12;
+            this.d_decompile_info.Text = "Done!";
+            // 
+            // d_save_info
+            // 
+            this.d_save_info.AutoSize = true;
+            this.d_save_info.ForeColor = System.Drawing.SystemColors.Control;
+            this.d_save_info.Location = new System.Drawing.Point(886, 98);
+            this.d_save_info.Name = "d_save_info";
+            this.d_save_info.Size = new System.Drawing.Size(49, 20);
+            this.d_save_info.TabIndex = 13;
+            this.d_save_info.Text = "Done!";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(129, 129);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(230, 230);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
+            // 
             // AIO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -134,6 +211,13 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1001, 373);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.d_save_info);
+            this.Controls.Add(this.d_decompile_info);
+            this.Controls.Add(this.d_select_info);
+            this.Controls.Add(this.c_save_info);
+            this.Controls.Add(this.c_compile_info);
+            this.Controls.Add(this.c_select_info);
             this.Controls.Add(this.d_save_file);
             this.Controls.Add(this.d_decompile_data);
             this.Controls.Add(this.d_select_file);
@@ -147,6 +231,8 @@
             this.MinimumSize = new System.Drawing.Size(1019, 420);
             this.Name = "AIO";
             this.Text = "f2i - file to image converter";
+            this.Load += new System.EventHandler(this.AIO_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,5 +248,12 @@
         private Button d_save_file;
         private Button d_decompile_data;
         private Button d_select_file;
+        private Label c_select_info;
+        private Label c_compile_info;
+        private Label c_save_info;
+        private Label d_select_info;
+        private Label d_decompile_info;
+        private Label d_save_info;
+        private PictureBox pictureBox1;
     }
 }
