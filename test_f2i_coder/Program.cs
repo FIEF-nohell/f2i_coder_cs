@@ -8,7 +8,7 @@ namespace test_f2i_coder
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new f2i());
+            Application.Run(new AIO());
         }
     }
 }
