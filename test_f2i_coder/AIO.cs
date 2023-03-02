@@ -154,10 +154,13 @@ namespace f2i_coder
             //compiler compile data
             try
             {
+                Cursor.Current = Cursors.WaitCursor;  
                 c_save_info.Visible = false;
                 compiler_compile();
-                c_save_image.Enabled = true;
+                Cursor.Current = Cursors.Default;
                 c_compile_info.Visible = true;
+                c_compile_info.Text = "Done!";
+                c_save_image.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -355,8 +358,10 @@ namespace f2i_coder
             //decompiler decompile data
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 d_save_info.Visible = false;
                 decompiler_decompile();
+                Cursor.Current = Cursors.Default;
                 d_save_file.Enabled = true;
                 d_decompile_info.Visible = true;
             }
