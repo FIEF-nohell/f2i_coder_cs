@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace f2i_coder
 {
@@ -17,6 +18,9 @@ namespace f2i_coder
     {
 
         byte[] binaryData = null;
+        byte[] binaryData_ext = null;
+        string fileExtension = "";
+        Bitmap bitmap;
         public Compiler()
         {
             InitializeComponent();
@@ -24,13 +28,12 @@ namespace f2i_coder
 
         private void Compiler_Load(object sender, EventArgs e)
         {
-
+            save_btn.Enabled = false;
+            button1.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -39,15 +42,20 @@ namespace f2i_coder
                 Stopwatch stopwatch1 = new Stopwatch();
                 stopwatch1.Start();
                 string filePath = openFileDialog.FileName;
+                fileExtension = Path.GetExtension(filePath); // Get the file extension
+                binaryData_ext = Encoding.UTF8.GetBytes(fileExtension);
                 try
                 {
                     using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
                     {
+                        
                         using (BinaryReader binaryReader = new BinaryReader(fileStream))
                         {
                             binaryData = binaryReader.ReadBytes((int)fileStream.Length);
                         }
                     }
+                    save_btn.Enabled = false;
+                    button1.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -67,23 +75,48 @@ namespace f2i_coder
             stopwatch1.Start();
             try
             {
-                int numPixels = binaryData.Length * 8; // each byte has 8 bits
+                int totalBytes = binaryData.Length + binaryData_ext.Length; // Total number of bytes
+
+                int numPixels = (totalBytes * 8) + 2; // each byte has 8 bits, add 1 for red pixel
                 int imageSize = (int)Math.Ceiling(Math.Sqrt(numPixels)); // calculate image size
-                Bitmap bitmap = new Bitmap(imageSize, imageSize);
+                bitmap = new Bitmap(imageSize, imageSize);
 
-                for (int i = 0; i < numPixels; i++)
+                int pixelIndex = 0;
+                for (int i = 0; i < binaryData.Length; i++)
                 {
-                    int x = i % imageSize;
-                    int y = i / imageSize;
-                    bool bitValue = (binaryData[i / 8] & (1 << (7 - (i % 8)))) != 0; // get bit value
-                    Color pixelColor = bitValue ? Color.White : Color.Black; // set pixel color
-                    bitmap.SetPixel(x, y, pixelColor);
+                    for (int j = 0; j < 8; j++)
+                    {
+                        int x = pixelIndex % imageSize;
+                        int y = pixelIndex / imageSize;
+                        bool bitValue = (binaryData[i] & (1 << (7 - j))) != 0; // get bit value
+                        Color pixelColor = bitValue ? Color.White : Color.Black; // set pixel color
+                        bitmap.SetPixel(x, y, pixelColor);
+                        pixelIndex++;
+                    }
                 }
+                bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Red); // Place red pixel
 
-                bitmap.Save("_encoded.png", ImageFormat.Png);
+                pixelIndex++;
+                for (int i = 0; i < binaryData_ext.Length; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        int x = pixelIndex % imageSize;
+                        int y = pixelIndex / imageSize;
+                        bool bitValue = (binaryData_ext[i] & (1 << (7 - j))) != 0; // get bit value
+                        Color pixelColor = bitValue ? Color.White : Color.Black; // set pixel color
+                        bitmap.SetPixel(x, y, pixelColor);
+                        pixelIndex++;
+                    }
+                }
+                bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Red); // Place final red pixel
+
                 pictureBox1.Image = bitmap;
+                save_btn.Enabled = true;
+                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
@@ -91,6 +124,22 @@ namespace f2i_coder
             TimeSpan elapsed1 = stopwatch1.Elapsed;
             info_lbl.Text = "Compiling took " + Math.Round(elapsed1.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " seconds";
 
+        }
+
+        private void save_btn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PNG Image|*.png"; // Set the filter to only allow PNG images
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string saveFilePath = saveFileDialog.FileName;
+                using (FileStream stream = new FileStream(saveFilePath, FileMode.Create))
+                {
+                    bitmap.Save(stream, ImageFormat.Png);
+                    save_btn.Enabled = false;
+                    button1.Enabled = false;
+                }
+            }
         }
     }
 }

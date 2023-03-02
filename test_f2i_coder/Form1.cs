@@ -108,6 +108,32 @@ namespace test_f2i_coder
             info_lbl.Text = "Reading data took " + Math.Round(elapsed.TotalSeconds, 2, MidpointRounding.ToEven).ToString() + " Seconds";
 
             file_data_global = file_data;
+
+            // Calculate the number of bytes needed to store the bit array
+            int numBytes = file_data_global.Count / 8;
+            if (file_data_global.Count % 8 != 0) numBytes++;
+
+            // Create a new byte array to store the converted bits
+            byte[] byteArray = new byte[numBytes];
+
+            // Loop through the bit array, setting each byte in the byte array
+            int byteIndex = 0;
+            int bitIndex = 0;
+            for (int i = 0; i < file_data_global.Count; i++)
+            {
+                if (file_data_global[i])
+                {
+                    byteArray[byteIndex] |= (byte)(1 << (7 - bitIndex));
+                }
+
+                bitIndex++;
+                if (bitIndex == 8)
+                {
+                    byteIndex++;
+                    bitIndex = 0;
+                }
+            }
+            info_lbl.Text = Encoding.UTF8.GetString(byteArray);
             ext_data_global = ext_data;
             button1.Enabled = true;
         }
