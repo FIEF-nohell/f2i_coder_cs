@@ -10,6 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace f2i_coder
 {
@@ -189,6 +192,70 @@ namespace f2i_coder
 
         // ----- DECOMPILER SECTION -----
 
+        private void decompiler_decompile()
+        {
+            int pixels = d_bmp.Height * d_bmp.Width;
+            int bytes_read = 0;
+            int red_bytes_read = 0;
+            int separator_counter = 0;
+            BitArray file_data = new BitArray(pixels);
+            BitArray ext_data = new BitArray(100);
+
+            for (int y = 0; y < d_bmp.Height; y++)
+            {
+                for (int x = 0; x < d_bmp.Width; x++)
+                {
+                    Color color = d_bmp.GetPixel(x, y);
+                    int r = color.R;
+                    if (r == 169)
+                    {
+                        separator_counter++;
+                        if (separator_counter == 2) break;
+                    }
+                    if (r == 0)
+                    {
+                        if (separator_counter == 0) file_data.Set(bytes_read, false);
+                        else if (separator_counter == 1) ext_data.Set(red_bytes_read, false);
+                    }
+                    if (r == 255)
+                    {
+                        if (separator_counter == 0) file_data.Set(bytes_read, true);
+                        else if (separator_counter == 1) ext_data.Set(red_bytes_read, true);
+                    }
+                    bytes_read++;
+                    if (separator_counter >= 1) red_bytes_read++;
+                }
+                if (separator_counter == 2) break;
+            }
+
+            d_file_data_global = file_data;
+
+            // Calculate the number of bytes needed to store the bit array
+            int numBytes = d_file_data_global.Count / 8;
+            if (d_file_data_global.Count % 8 != 0) numBytes++;
+
+            // Create a new byte array to store the converted bits
+            byte[] byteArray = new byte[numBytes];
+
+            // Loop through the bit array, setting each byte in the byte array
+            int byteIndex = 0;
+            int bitIndex = 0;
+            for (int i = 0; i < d_file_data_global.Count; i++)
+            {
+                if (d_file_data_global[i])
+                {
+                    byteArray[byteIndex] |= (byte)(1 << (7 - bitIndex));
+                }
+
+                bitIndex++;
+                if (bitIndex == 8)
+                {
+                    byteIndex++;
+                    bitIndex = 0;
+                }
+            }
+        }
+
         private void decompiler_select_file()
         {
             // open file dialog   
@@ -203,11 +270,63 @@ namespace f2i_coder
             }
         }
 
+        private void decompiler_save_file()
+        {
+            Stopwatch stopwatch2 = new Stopwatch();
+            stopwatch2.Start();
+            // Convert the BitArray to a byte array
+            List<byte> byteList = new List<byte>();
+            byte currentByte = 0;
+            int bitCount = 0;
+
+            foreach (bool bit in d_file_data_global)
+            {
+                currentByte <<= 1;
+                if (bit)
+                {
+                    currentByte |= 1;
+                }
+                bitCount++;
+                if (bitCount == 8)
+                {
+                    byteList.Add(currentByte);
+                    currentByte = 0;
+                    bitCount = 0;
+                }
+            }
+
+            if (bitCount > 0)
+            {
+                currentByte <<= (8 - bitCount);
+                byteList.Add(currentByte);
+            }
+
+            byte[] data = byteList.ToArray();
+
+            // Create a dialog box to select the output location and filename
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Title = "Save File";
+            saveFileDialog1.ShowDialog();
+
+            // If the user selects a file location and name, save the file
+            if (saveFileDialog1.FileName != "")
+            {
+                // Write the binary data to the selected file
+                using (FileStream fs = new FileStream(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(data, 0, data.Length);
+                    d_file_data_global = null;
+                }
+            }
+
+        }
+
         private void d_select_file_Click(object sender, EventArgs e)
         {
             //decompiler select file
             try
             {
+                d_bmp = null;
                 pictureBox2.Image = null;
                 d_decompile_info.Visible = false;
                 d_save_info.Visible = false;
@@ -215,8 +334,11 @@ namespace f2i_coder
                 d_decompile_data.Enabled = false;
                 d_save_file.Enabled = false;
                 decompiler_select_file();
-                d_decompile_data.Enabled = true;
-                d_select_info.Visible = true;
+                if(d_bmp != null)
+                {
+                    d_decompile_data.Enabled = true;
+                    d_select_info.Visible = true;
+                }
             }
             catch(Exception ex)
             {
@@ -229,7 +351,10 @@ namespace f2i_coder
             //decompiler decompile data
             try
             {
-
+                d_save_info.Visible = false;
+                decompiler_decompile();
+                d_save_file.Enabled = true;
+                d_decompile_info.Visible = true;
             }
             catch (Exception ex)
             {
@@ -242,7 +367,13 @@ namespace f2i_coder
             //decompiler save file
             try
             {
-
+                decompiler_save_file();
+                if(d_file_data_global == null)
+                {
+                    d_save_file.Enabled = false;
+                    d_decompile_data.Enabled = false;
+                    d_save_info.Visible = true;
+                }
             }
             catch (Exception ex)
             {
