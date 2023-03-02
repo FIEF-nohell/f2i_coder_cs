@@ -49,7 +49,8 @@ namespace f2i_coder
 
         Bitmap d_bmp = null;
         BitArray d_file_data_global = new BitArray(0);
-        BitArray d_ext_data_global = new BitArray(0);
+        List<bool> ext_data = new List<bool>();
+
 
         // ----- COMPILER SECTION -----
 
@@ -89,7 +90,7 @@ namespace f2i_coder
                     pixelIndex++;
                 }
             }
-            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Red); // Place red pixel
+            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place red pixel
 
             pixelIndex++;
             for (int i = 0; i < c_binaryData_ext.Length; i++)
@@ -104,7 +105,7 @@ namespace f2i_coder
                     pixelIndex++;
                 }
             }
-            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Red); // Place final red pixel
+            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place final red pixel
             pictureBox1.Image = c_bitmap;
         }
 
@@ -199,7 +200,6 @@ namespace f2i_coder
             int red_bytes_read = 0;
             int separator_counter = 0;
             BitArray file_data = new BitArray(pixels);
-            BitArray ext_data = new BitArray(100);
 
             for (int y = 0; y < d_bmp.Height; y++)
             {
@@ -207,20 +207,21 @@ namespace f2i_coder
                 {
                     Color color = d_bmp.GetPixel(x, y);
                     int r = color.R;
-                    if (r == 169)
+                    int b = color.B;
+                    if(b == 255 && r == 0)
                     {
                         separator_counter++;
                         if (separator_counter == 2) break;
                     }
-                    if (r == 0)
+                    else if (r == 0)
                     {
                         if (separator_counter == 0) file_data.Set(bytes_read, false);
-                        else if (separator_counter == 1) ext_data.Set(red_bytes_read, false);
+                        else if (separator_counter == 1) ext_data.Add(false);
                     }
-                    if (r == 255)
+                    else if (r == 255)
                     {
                         if (separator_counter == 0) file_data.Set(bytes_read, true);
-                        else if (separator_counter == 1) ext_data.Set(red_bytes_read, true);
+                        else if (separator_counter == 1) ext_data.Add(true);
                     }
                     bytes_read++;
                     if (separator_counter >= 1) red_bytes_read++;
@@ -230,30 +231,20 @@ namespace f2i_coder
 
             d_file_data_global = file_data;
 
-            // Calculate the number of bytes needed to store the bit array
-            int numBytes = d_file_data_global.Count / 8;
-            if (d_file_data_global.Count % 8 != 0) numBytes++;
-
-            // Create a new byte array to store the converted bits
-            byte[] byteArray = new byte[numBytes];
-
-            // Loop through the bit array, setting each byte in the byte array
-            int byteIndex = 0;
-            int bitIndex = 0;
-            for (int i = 0; i < d_file_data_global.Count; i++)
+            byte[] bytes = new byte[ext_data.Count/8]; // Round up to the nearest multiple of 8
+            for (int i = 0; i < ext_data.Count; i++)
             {
-                if (d_file_data_global[i])
+                if (ext_data[i])
                 {
-                    byteArray[byteIndex] |= (byte)(1 << (7 - bitIndex));
+                    bytes[i / 8] |= (byte)(1 << (i % 8)); // Set the corresponding bit in the byte
                 }
-
-                bitIndex++;
-                if (bitIndex == 8)
-                {
-                    byteIndex++;
-                    bitIndex = 0;
-                }
+                MessageBox.Show(ext_data[i].ToString());
             }
+
+            // Convert the byte array to a string using ASCII encoding
+            string result = Encoding.ASCII.GetString(bytes);
+            MessageBox.Show(result);
+
         }
 
         private void decompiler_select_file()
