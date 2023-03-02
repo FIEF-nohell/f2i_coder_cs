@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
+using System.Numerics;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace f2i_coder
 {
@@ -50,6 +42,7 @@ namespace f2i_coder
         Bitmap d_bmp = null;
         BitArray d_file_data_global = new BitArray(0);
         List<bool> ext_data = new List<bool>();
+        string d_ext= "";
 
 
         // ----- COMPILER SECTION -----
@@ -193,6 +186,18 @@ namespace f2i_coder
 
         // ----- DECOMPILER SECTION -----
 
+        private byte ReverseBits(byte b)
+        {
+            byte result = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                result <<= 1;
+                result |= (byte)(b & 1);
+                b >>= 1;
+            }
+            return result;
+        }
+
         private void decompiler_decompile()
         {
             int pixels = d_bmp.Height * d_bmp.Width;
@@ -231,20 +236,27 @@ namespace f2i_coder
 
             d_file_data_global = file_data;
 
-            byte[] bytes = new byte[ext_data.Count/8]; // Round up to the nearest multiple of 8
+            byte[] bytes = new byte[(ext_data.Count + 7) / 8]; // Round up to the nearest multiple of 8
             for (int i = 0; i < ext_data.Count; i++)
             {
                 if (ext_data[i])
                 {
-                    bytes[i / 8] |= (byte)(1 << (i % 8)); // Set the corresponding bit in the byte
+                    int byteIndex = (ext_data.Count - i - 1) / 8;
+                    int bitIndex = (ext_data.Count - i - 1) % 8;
+                    bytes[byteIndex] |= (byte)(1 << bitIndex); // Set the corresponding bit in the byte
                 }
-                MessageBox.Show(ext_data[i].ToString());
             }
 
-            // Convert the byte array to a string using ASCII encoding
-            string result = Encoding.ASCII.GetString(bytes);
-            MessageBox.Show(result);
+            foreach (byte b in bytes)
+            {
+                byte reversed = ReverseBits(b);
+                d_ext += reversed.ToString("X2"); // Convert the byte to a hex string and add it to the result
+            }
 
+
+            // Convert the byte array to a string using ASCII encoding
+            d_ext = Encoding.ASCII.GetString(bytes);
+            d_ext = new string(d_ext.Reverse().ToArray());
         }
 
         private void decompiler_select_file()
@@ -296,6 +308,7 @@ namespace f2i_coder
 
             // Create a dialog box to select the output location and filename
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "File Type |*" + d_ext;
             saveFileDialog1.Title = "Save File";
             saveFileDialog1.ShowDialog();
 
