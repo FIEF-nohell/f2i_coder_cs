@@ -3,7 +3,7 @@
 
 This project converts any file into bits, slaps those into an image where white pixels represent 1's and black pixels represent 0's. 
 
-At the end of the bits of the files, there is a red pixel that seperates a couple of bites, those represent the file type.
+At the end of the bits of the files, there is a blue pixel that seperates a couple of bites, those represent the file type.
 
 A decompiler is included as well.
 
