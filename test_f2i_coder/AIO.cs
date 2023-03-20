@@ -135,7 +135,6 @@ namespace f2i_coder
                 c_select_info.Visible = false;
                 c_compile_data.Enabled = false;
                 c_save_image.Enabled = false;
-                ext_data = null;
                 d_ext = "";
                 compiler_input_file();
 
@@ -211,35 +210,56 @@ namespace f2i_coder
             int separator_counter = 0;
             BitArray file_data = new BitArray(pixels);
 
-            for (int y = 0; y < d_bmp.Height; y++)
+            BitmapData bmpData = d_bmp.LockBits(new Rectangle(0, 0, d_bmp.Width, d_bmp.Height),
+                                                ImageLockMode.ReadOnly,
+                                                PixelFormat.Format24bppRgb);
+            try
             {
-                for (int x = 0; x < d_bmp.Width; x++)
+                unsafe
                 {
-                    Color color = d_bmp.GetPixel(x, y);
-                    int r = color.R;
-                    int b = color.B;
-                    if(b == 255 && r == 0)
+                    byte* ptr = (byte*)bmpData.Scan0;
+
+                    for (int y = 0; y < d_bmp.Height; y++)
                     {
-                        separator_counter++;
+                        for (int x = 0; x < d_bmp.Width; x++)
+                        {
+                            int r = ptr[2];
+                            int b = ptr[0];
+
+                            if (b == 255 && r == 0)
+                            {
+                                separator_counter++;
+                                if (separator_counter == 2) break;
+                            }
+                            else if (r == 0)
+                            {
+                                if (separator_counter == 0) file_data.Set(bytes_read, false);
+                                else if (separator_counter == 1) ext_data.Add(false);
+                            }
+                            else if (r == 255)
+                            {
+                                if (separator_counter == 0) file_data.Set(bytes_read, true);
+                                else if (separator_counter == 1) ext_data.Add(true);
+                            }
+
+                            bytes_read++;
+                            if (separator_counter >= 1) blue_bytes_read++;
+
+                            ptr += 3;
+                        }
+
                         if (separator_counter == 2) break;
+                        ptr += bmpData.Stride - (d_bmp.Width * 3);
                     }
-                    else if (r == 0)
-                    {
-                        if (separator_counter == 0) file_data.Set(bytes_read, false);
-                        else if (separator_counter == 1) ext_data.Add(false);
-                    }
-                    else if (r == 255)
-                    {
-                        if (separator_counter == 0) file_data.Set(bytes_read, true);
-                        else if (separator_counter == 1) ext_data.Add(true);
-                    }
-                    bytes_read++;
-                    if (separator_counter >= 1) blue_bytes_read++;
                 }
-                if (separator_counter == 2) break;
+            }
+            finally
+            {
+                d_bmp.UnlockBits(bmpData);
             }
 
             d_file_data_global = file_data;
+
 
             byte[] bytes = new byte[(ext_data.Count + 7) / 8]; // Round up to the nearest multiple of 8
             for (int i = 0; i < ext_data.Count; i++)
@@ -342,7 +362,6 @@ namespace f2i_coder
                 d_select_info.Visible = false;
                 d_decompile_data.Enabled = false;
                 d_save_file.Enabled = false;
-                ext_data = null;
                 d_ext = "";
                 decompiler_select_file();
                 if (d_bmp != null)
