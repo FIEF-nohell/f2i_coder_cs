@@ -66,7 +66,7 @@ namespace f2i_coder
         {
             int totalBytes = c_binaryData.Length + c_binaryData_ext.Length; // Total number of bytes
 
-            int numPixels = (totalBytes * 8) + 2; // each byte has 8 bits, add 1 for red pixel
+            int numPixels = (totalBytes * 8) + 2; // each byte has 8 bits, add 1 for blue pixel
             int imageSize = (int)Math.Ceiling(Math.Sqrt(numPixels)); // calculate image size
             c_bitmap = new Bitmap(imageSize, imageSize);
 
@@ -83,7 +83,7 @@ namespace f2i_coder
                     pixelIndex++;
                 }
             }
-            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place red pixel
+            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place blue pixel
 
             pixelIndex++;
             for (int i = 0; i < c_binaryData_ext.Length; i++)
@@ -98,7 +98,7 @@ namespace f2i_coder
                     pixelIndex++;
                 }
             }
-            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place final red pixel
+            c_bitmap.SetPixel(pixelIndex % imageSize, pixelIndex / imageSize, Color.Blue); // Place final blue pixel
             pictureBox1.Image = c_bitmap;
         }
 
@@ -135,6 +135,8 @@ namespace f2i_coder
                 c_select_info.Visible = false;
                 c_compile_data.Enabled = false;
                 c_save_image.Enabled = false;
+                ext_data = null;
+                d_ext = "";
                 compiler_input_file();
 
                 if(c_binaryData != null)
@@ -205,7 +207,7 @@ namespace f2i_coder
         {
             int pixels = d_bmp.Height * d_bmp.Width;
             int bytes_read = 0;
-            int red_bytes_read = 0;
+            int blue_bytes_read = 0;
             int separator_counter = 0;
             BitArray file_data = new BitArray(pixels);
 
@@ -232,7 +234,7 @@ namespace f2i_coder
                         else if (separator_counter == 1) ext_data.Add(true);
                     }
                     bytes_read++;
-                    if (separator_counter >= 1) red_bytes_read++;
+                    if (separator_counter >= 1) blue_bytes_read++;
                 }
                 if (separator_counter == 2) break;
             }
@@ -340,8 +342,10 @@ namespace f2i_coder
                 d_select_info.Visible = false;
                 d_decompile_data.Enabled = false;
                 d_save_file.Enabled = false;
+                ext_data = null;
+                d_ext = "";
                 decompiler_select_file();
-                if(d_bmp != null)
+                if (d_bmp != null)
                 {
                     d_decompile_data.Enabled = true;
                     d_select_info.Visible = true;
